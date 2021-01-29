@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <h3>Mis Datos</h3>
+    <table class="table table-bordered" style="text-align: center">
+        <thead>
+        <tr>
+            <td>{{ contacto.nombre }}</td>
+            <td><a style="text-align: center" href="{{ path('app_logout') }}" title="Salir" class="btn btn-danger btn-sm pull-right">Salir</a></td>
+        </tr>
+        <tr>
+            <td>Edad: {{ contacto.edad }}</td>
+            <td>{{ contacto.sexo }}</td>
+        </tr>
+        <tr>
+            <td>Telefono {{ user.telefono }}</td>
+            <td>Infectado:
+                {% if user.infectado == 0 %}
+                    No
+                {% else %}
+                    Si
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>CP: {{ user.codigoPostal }}</td>
+            <td>Probabilidad de contagio: {{ contacto.pContagio }}</td>
+        </tr>
+        <tr>
+            <td>Actualiza tu estado de infección</td>
+            <td><a style="text-align: center" href="{{ path('actualizar-infeccion',{id:user.id}) }}" title="Actualizar" class="btn btn-primary btn-sm pull-right">Actualizar</a></td>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <h3>Mis contactos</h3>
+    {% if contactos is null %}
+        <h4>No hay contactos registrados</h4>
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Edad</td>
+                <td>Sexo</td>
+                <td>Prob. contagio</td>
+                <td>Prob. contacto</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for data in contactos %}
+                <tr>
+                    <td>{{ data.nombre }}</td>
+                    <td>{{ data.edad }}</td>
+                    <td>{{ data.sexo }}</td>
+                    <td>{{ data.pContagio }}</td>
+                    <td>{{ data.pContacto }}</td>
+                    <td><a style="text-align: center" href="{{ path('actualizar-contacto',{id:data.id}) }}" title="Actualizar" class="btn btn-primary btn-sm pull-right">Actualizar</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Añadir Contacto</h3>
+        </div>
+        <div class="col-md-4">
+            <a style="text-align: center" href="{{ path('registro-contacto',{id:user.id}) }}" title="Agregar" class="btn btn-success btn-sm pull-right">Agregar</a>
+        </div>
+    </div>
+    <h3>Añadir Usuarios</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>Nombre</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.nombre }}</td>
+                <td><a style="text-align: center" href="{{ path('registro-enlace',{user:user.id,contact:usuario.id}) }}" title="Agregar" class="btn btn-success btn-sm pull-right">Agregar</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
